@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herausforderungs-Tour 2026 · Rothaarsteig</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:   #1B4332;
+    --deep:     #081C0E;
+    --mid:      #2D6A4F;
+    --moss:     #52B788;
+    --mint:     #95D5B2;
+    --cream:    #F8F4E8;
+    --sand:     #E9DFC8;
+    --amber:    #D4A853;
+    --rust:     #C0622A;
+    --charcoal: #1A1A2E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,28,14,0.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--moss);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--mint);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* SVG mountain scene inline */
+  .hero-bg svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Animated stars */
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: var(--op, 0.6); transform: scale(1); }
+    50% { opacity: 0.1; transform: scale(0.5); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding: 0 6vw 8vh;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--moss);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    font-weight: 900;
+    line-height: 0.92;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--moss);
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--sand);
+    font-weight: 300;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.7s forwards;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.9s forwards;
+  }
+
+  .pill {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(82,183,136,0.4);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--mint);
+    letter-spacing: 0.08em;
+    background: rgba(27,67,50,0.3);
+    backdrop-filter: blur(8px);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 5vw;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s forwards;
+  }
+
+  .scroll-hint span {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--moss);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--moss), transparent);
+    animation: scrollPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* ── SECTION BASE ── */
+  section { position: relative; }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 7rem 5vw;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    color: var(--moss);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── ABOUT SECTION ── */
+  #about {
+    background: var(--forest);
+    clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+    padding: 3rem 0;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--sand);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-text p strong {
+    color: var(--mint);
+    font-weight: 500;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: rgba(8,28,14,0.5);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(82,183,136,0.6);
+    transform: translateY(-3px);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--moss);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--moss);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--mint);
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  /* ── ETAPPEN SECTION ── */
+  #etappen {
+    background: var(--deep);
+  }
+
+  .etappen-intro {
+    max-width: 580px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--sand);
+    margin-bottom: 4rem;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--moss), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 3.5rem 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -0.45rem;
+    top: 0.3rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    background: var(--moss);
+    border-radius: 50%;
+    border: 2px solid var(--deep);
+    box-shadow: 0 0 0 3px rgba(82,183,136,0.25);
+  }
+
+  .timeline-day {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--moss);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-route {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-meta {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    background: rgba(82,183,136,0.1);
+    padding: 0.2rem 0.65rem;
+    border-radius: 100px;
+    border: 1px solid rgba(82,183,136,0.25);
+  }
+
+  .timeline-sleep {
+    font-size: 0.9rem;
+    color: var(--sand);
+    opacity: 0.75;
+    font-style: italic;
+  }
+
+  /* ── ÜBERNACHTUNG SECTION ── */
+  #uebernachtung {
+    background: var(--forest);
+    clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+    padding: 3rem 0;
+  }
+
+  .method-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .method-card {
+    background: rgba(8,28,14,0.6);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 16px;
+    padding: 2.2rem 1.8rem;
+    transition: all 0.35s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .method-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(82,183,136,0.08), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+
+  .method-card:hover {
+    border-color: rgba(82,183,136,0.5);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .method-card:hover::after { opacity: 1; }
+
+  .method-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+
+  .method-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+  }
+
+  .method-desc {
+    font-size: 0.9rem;
+    color: var(--sand);
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .speech-bubble {
+    margin-top: 1.2rem;
+    background: rgba(82,183,136,0.1);
+    border-left: 2px solid var(--moss);
+    padding: 0.8rem 1rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.82rem;
+    color: var(--mint);
+    font-style: italic;
+    line-height: 1.55;
+  }
+
+  /* ── BUDGET SECTION ── */
+  #budget {
+    background: var(--deep);
+  }
+
+  .budget-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .budget-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+  }
+
+  .budget-table tr td {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .budget-table tr td:first-child {
+    color: var(--sand);
+    border-radius: 8px 0 0 8px;
+  }
+
+  .budget-table tr td:last-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--moss);
+    text-align: right;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .budget-table tr:nth-child(odd) td {
+    background: rgba(27,67,50,0.35);
+  }
+
+  .budget-table tr:nth-child(even) td {
+    background: rgba(27,67,50,0.15);
+  }
+
+  .budget-table tr.total td {
+    background: rgba(82,183,136,0.15);
+    border: 1px solid rgba(82,183,136,0.3);
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .budget-table tr.total td:last-child {
+    color: var(--mint);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .budget-visual {
+    position: sticky;
+    top: 8rem;
+  }
+
+  .budget-ring-label {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .budget-ring-label span {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--moss);
+  }
+
+  .budget-ring-label p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--mint);
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-top: 0.2rem;
+  }
+
+  .donut-wrap {
+    position: relative;
+    width: 220px;
+    margin: 0 auto;
+  }
+
+  .donut-wrap svg { display: block; }
+
+  .donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .donut-center strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--cream);
+  }
+
+  .donut-center small {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--moss);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.2rem;
+  }
+
+  .legend {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.85rem;
+    color: var(--sand);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── SICHERHEIT SECTION ── */
+  #sicherheit {
+    background: linear-gradient(135deg, var(--forest) 0%, var(--deep) 60%);
+    clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+    padding: 3rem 0;
+  }
+
+  .safety-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    margin-top: 3rem;
+  }
+
+  .safety-card {
+    background: rgba(8,28,14,0.7);
+    border: 1px solid rgba(82,183,136,0.15);
+    border-radius: 12px;
+    padding: 1.8rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    transition: border-color 0.3s;
+  }
+
+  .safety-card:hover { border-color: rgba(82,183,136,0.4); }
+
+  .safety-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .safety-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+
+  .safety-card p {
+    font-size: 0.88rem;
+    color: var(--sand);
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+
+  /* ── PACKLISTE SECTION ── */
+  #packliste {
+    background: var(--deep);
+  }
+
+  .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .gear-item {
+    background: rgba(27,67,50,0.2);
+    border: 1px solid rgba(82,183,136,0.12);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .gear-item:hover {
+    background: rgba(27,67,50,0.45);
+    border-color: rgba(82,183,136,0.35);
+    transform: translateX(4px);
+  }
+
+  .gear-emoji { font-size: 1.4rem; flex-shrink: 0; }
+
+  .gear-info h4 {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.1rem;
+  }
+
+  .gear-info small {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--moss);
+    opacity: 0.8;
+  }
+
+  .weight-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
+  .weight-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(82,183,136,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .weight-fill {
+    height: 100%;
+    background: var(--moss);
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(82,183,136,0.15);
+    padding: 3rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--moss);
+  }
+
+  .footer-info {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    opacity: 0.5;
+    letter-spacing: 0.08em;
+    text-align: center;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--mint);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-links a:hover { opacity: 1; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .about-grid, .budget-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .method-cards { grid-template-columns: 1fr; }
+    .gear-grid { grid-template-columns: 1fr 1fr; }
+    .safety-grid { grid-template-columns: 1fr; }
+    .budget-visual { position: static; }
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .gear-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .hero-title { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a class="nav-logo" href="#">🌿 Herausforderung 2026</a>
+  <ul class="nav-links">
+    <li><a href="#about">Projekt</a></li>
+    <li><a href="#etappen">Etappen</a></li>
+    <li><a href="#uebernachtung">Unterkunft</a></li>
+    <li><a href="#budget">Budget</a></li>
+    <li><a href="#sicherheit">Sicherheit</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#040D0A"/>
+          <stop offset="40%" stop-color="#0A1E14"/>
+          <stop offset="75%" stop-color="#122E1E"/>
+          <stop offset="100%" stop-color="#1B4332"/>
+        </linearGradient>
+        <radialGradient id="moonGlow" cx="78%" cy="15%" r="18%">
+          <stop offset="0%" stop-color="#E8F5E9" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="pathGlow" cx="50%" cy="60%" r="40%">
+          <stop offset="0%" stop-color="#52B788" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+        <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+        <filter id="blur1"><feGaussianBlur stdDeviation="1"/></filter>
+      </defs>
+
+      <!-- Sky gradient -->
+      <rect width="1280" height="720" fill="url(#sky)"/>
+      <rect width="1280" height="720" fill="url(#moonGlow)"/>
+      <rect width="1280" height="720" fill="url(#pathGlow)"/>
+
+      <!-- Moon -->
+      <circle cx="980" cy="105" r="52" fill="#1A3E2A" filter="url(#blur4)"/>
+      <circle cx="968" cy="98" r="48" fill="#F0EDD8" opacity="0.92"/>
+      <circle cx="985" cy="88" r="44" fill="#0A1E14" opacity="0.92"/>
+      <!-- Moon craters -->
+      <circle cx="950" cy="100" r="6" fill="#E0D9C0" opacity="0.3"/>
+      <circle cx="975" cy="115" r="4" fill="#E0D9C0" opacity="0.25"/>
+
+      <!-- Far mountain range (blurry, distant) -->
+      <polygon points="0,520 80,380 180,460 280,320 420,440 520,280 640,400 760,300 880,420 1000,280 1120,380 1200,320 1280,360 1280,720 0,720"
+               fill="#0F2918" filter="url(#blur2)" opacity="0.9"/>
+
+      <!-- Mid mountain range -->
+      <polygon points="0,560 60,430 160,510 260,370 380,490 500,330 620,460 740,360 860,480 960,340 1080,450 1160,370 1280,430 1280,720 0,720"
+               fill="#142B1C"/>
+
+      <!-- Near mountains -->
+      <polygon points="0,600 100,460 220,560 360,410 500,540 620,430 740,550 860,430 1000,540 1100,440 1200,520 1280,470 1280,720 0,720"
+               fill="#1B4332"/>
+
+      <!-- Foreground hills -->
+      <ellipse cx="0" cy="720" rx="380" ry="160" fill="#0C1F12"/>
+      <ellipse cx="400" cy="740" rx="500" ry="180" fill="#0A1A0F"/>
+      <ellipse cx="1100" cy="730" rx="420" ry="170" fill="#0C1F12"/>
+      <ellipse cx="1280" cy="720" rx="300" ry="140" fill="#0A1A0F"/>
+
+      <!-- Trail / path perspective -->
+      <path d="M 640 720 Q 610 620 600 530 Q 590 460 615 400 Q 630 360 638 300 Q 642 240 640 180"
+            stroke="#52B788" stroke-width="2.5" fill="none" opacity="0.4" stroke-dasharray="14 7"
+            filter="url(#blur1)"/>
+
+      <!-- Trees left side (detailed) -->
+      <g opacity="0.95">
+        <!-- Tree clusters left -->
+        <polygon points="0,620 35,460 70,620" fill="#071510"/>
+        <polygon points="25,640 65,470 105,640" fill="#0A1C13"/>
+        <polygon points="60,630 100,455 140,630" fill="#071510"/>
+        <polygon points="100,650 145,480 190,650" fill="#0C2016"/>
+        <polygon points="30,665 80,510 130,665" fill="#081811"/>
+        <!-- second layer trees -->
+        <polygon points="140,645 180,490 220,645" fill="#0A1C13"/>
+        <polygon points="170,660 215,500 260,660" fill="#071510"/>
+        <polygon points="0,660 45,520 90,660" fill="#08160F"/>
+        <!-- Tree trunks -->
+        <rect x="32" y="620" width="6" height="35" fill="#050E08" rx="2"/>
+        <rect x="97" y="630" width="6" height="30" fill="#050E08" rx="2"/>
+        <rect x="182" y="640" width="5" height="25" fill="#050E08" rx="2"/>
+      </g>
+
+      <!-- Trees right side -->
+      <g opacity="0.95">
+        <polygon points="1100,615 1140,450 1180,615" fill="#071510"/>
+        <polygon points="1140,635 1185,465 1230,635" fill="#0A1C13"/>
+        <polygon points="1180,625 1225,455 1270,625" fill="#071510"/>
+        <polygon points="1200,650 1248,480 1280,650" fill="#0C2016"/>
+        <polygon points="1060,640 1105,480 1150,640" fill="#081811"/>
+        <polygon points="1230,655 1265,510 1280,655" fill="#0A1C13"/>
+        <rect x="1136" y="620" width="6" height="30" fill="#050E08" rx="2"/>
+        <rect x="1183" y="625" width="5" height="28" fill="#050E08" rx="2"/>
+      </g>
+
+      <!-- Firefly dots / atmosphere -->
+      <circle cx="320" cy="580" r="2" fill="#52B788" opacity="0.5" filter="url(#blur1)"/>
+      <circle cx="480" cy="545" r="1.5" fill="#52B788" opacity="0.4" filter="url(#blur1)"/>
+      <circle cx="820" cy="560" r="2" fill="#95D5B2" opacity="0.45" filter="url(#blur1)"/>
+      <circle cx="940" cy="590" r="1.5" fill="#52B788" opacity="0.5" filter="url(#blur1)"/>
+
+      <!-- Gradient overlay at bottom for text legibility -->
+      <linearGradient id="bottomFade" x1="0" y1="0.3" x2="0" y2="1">
+        <stop offset="0%" stop-color="transparent"/>
+        <stop offset="100%" stop-color="#040D0A" stop-opacity="0.85"/>
+      </linearGradient>
+      <rect width="1280" height="720" fill="url(#bottomFade)"/>
+    </svg>
+  </div>
+
+  <!-- Animated stars -->
+  <div id="stars"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Fach Herausforderung · Klasse 8 · Wuppertal</p>
+    <h1 class="hero-title">Rothaar<br><em>steig</em></h1>
+    <p class="hero-subtitle">11 Tage Wanderprojekt im Sauerland. Selbstständigkeit, Teamarbeit und echtes Abenteuer – mit 100 € Budget ab Wuppertal.</p>
+    <div class="hero-pills">
+      <span class="pill">🚆 Deutschlandticket</span>
+      <span class="pill">🏕️ Zelt & Vollgepäck</span>
+      <span class="pill">💰 100 € Budget</span>
+      <span class="pill">📍 Winterberg → Sauerland</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-label">Das Projekt</p>
+        <h2 class="section-title">Was ist die<br><em style="font-style:italic;color:var(--moss)">Herausforderung?</em></h2>
+        <p>Das Fach <strong>„Herausforderung"</strong> schickt uns für 11 Tage auf eigene Faust in die Natur – ohne feste Unterkunft, mit minimalem Budget und maximaler Eigenverantwortung.</p>
+        <p>Wir wandern einen Abschnitt des <strong>Rothaarsteigs</strong> im Sauerland. Die Übernachtungen organisieren wir unterwegs: durch Helfen auf Campingplätzen, Anklopfen bei Privatleuten und Bauernhöfen.</p>
+        <p>Das ist kein normaler Schulausflug. Es ist eine echte <strong>Lebensschule.</strong></p>
+      </div>
+      <div class="stat-grid reveal">
+        <div class="stat-card">
+          <div class="stat-number">11</div>
+          <div class="stat-label">Tage gesamt</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100€</div>
+          <div class="stat-label">Budget p.P.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">~140</div>
+          <div class="stat-label">Kilometer</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">0€</div>
+          <div class="stat-label">Übernachtung</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ETAPPEN -->
+<section id="etappen">
+  <div class="section-inner">
+    <p class="section-label reveal">Die Route</p>
+    <h2 class="section-title reveal">10 Tage auf<br><em style="font-style:italic;color:var(--moss)">dem Weg</em></h2>
+    <p class="etappen-intro reveal">Ab Wuppertal mit dem RE 57 nach Winterberg (ca. 3,5 Std., alles kostenlos mit dem Deutschlandticket). Von dort starten wir auf dem Rothaarsteig.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 1 — Anreise</div>
+        <div class="timeline-route">Wuppertal → Winterberg</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🚆 Zug</span>
+          <span class="meta-tag">~3,5 Std.</span>
+          <span class="meta-tag">0 €</span>
+        </div>
+        <div class="timeline-sleep">🏕️ Campingplatz anfragen / Gastgeber kontaktieren</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 2</div>
+        <div class="timeline-route">Winterberg → Züschen</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 13 km</span>
+          <span class="meta-tag">↑ 350 m</span>
+        </div>
+        <div class="timeline-sleep">🏕️ Campingplatz Valmetal / Bauernhof</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 3</div>
+        <div class="timeline-route">Züschen → Schmallenberg</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 14 km</span>
+          <span class="meta-tag">↑ 320 m</span>
+        </div>
+        <div class="timeline-sleep">🏕️ Campingplatz Schmallenberg / Privat</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 4</div>
+        <div class="timeline-route">Schmallenberg → Bad Fredeburg</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 12 km</span>
+          <span class="meta-tag">↑ 280 m</span>
+        </div>
+        <div class="timeline-sleep">🏕️ Gemeinde / Feuerwehr fragen</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 5</div>
+        <div class="timeline-route">Bad Fredeburg → Kloster Grafschaft</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 14 km</span>
+          <span class="meta-tag">↑ 300 m</span>
+        </div>
+        <div class="timeline-sleep">⛪ Kloster Grafschaft anfragen (Pilgertradition!)</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 6</div>
+        <div class="timeline-route">Grafschaft → Bad Berleburg</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 15 km</span>
+          <span class="meta-tag">↑ 380 m</span>
+        </div>
+        <div class="timeline-sleep">🏕️ Campingplatz / Stadtrand</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 7</div>
+        <div class="timeline-route">Bad Berleburg → Raumland</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 13 km</span>
+          <span class="meta-tag">↑ 290 m</span>
+        </div>
+        <div class="timeline-sleep">🏠 Vereinsheim / Sportplatz / Privat</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 8</div>
+        <div class="timeline-route">Raumland → Wingeshausen</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 14 km</span>
+          <span class="meta-tag">↑ 310 m</span>
+        </div>
+        <div class="timeline-sleep">🌾 Bauernhof anfragen</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 9</div>
+        <div class="timeline-route">Wingeshausen → Winterberg</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🥾 ca. 13 km</span>
+          <span class="meta-tag">↑ 260 m</span>
+        </div>
+        <div class="timeline-sleep">🏕️ Letzte Nacht – Campingplatz</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-day">Tag 10 — Heimreise</div>
+        <div class="timeline-route">Winterberg → Wuppertal</div>
+        <div class="timeline-meta">
+          <span class="meta-tag">🚆 Zug</span>
+          <span class="meta-tag">~3,5 Std.</span>
+          <span class="meta-tag">0 €</span>
+        </div>
+        <div class="timeline-sleep">🏠 Zuhause!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÜBERNACHTUNG -->
+<section id="uebernachtung">
+  <div class="section-inner">
+    <p class="section-label reveal">Wo schlafen?</p>
+    <h2 class="section-title reveal">Kostenlos<br><em style="font-style:italic;color:var(--moss)">übernachten</em></h2>
+    <p class="reveal" style="color:var(--sand);max-width:560px;line-height:1.75;margin-bottom:0">Das ist der Kern der Herausforderung: Wir fragen, verhandeln, helfen – und bauen dabei Vertrauen zu fremden Menschen auf.</p>
+
+    <div class="method-cards">
+      <div class="method-card reveal">
+        <span class="method-icon">⛺</span>
+        <div class="method-title">Campingplätze</div>
+        <p class="method-desc">Wir bieten Helfen gegen Übernachtung an – Müll sammeln, fegen, Holz hacken. Viele Betreiber kleiner Plätze sind sehr offen dafür.</p>
+        <div class="speech-bubble">„Dürfen wir zelten, wenn wir morgen früh helfen?"</div>
+      </div>
+      <div class="method-card reveal">
+        <span class="method-icon">🏠</span>
+        <div class="method-title">Privatleute</div>
+        <p class="method-desc">Klingeln, ehrlich erklären, Schulprojekt zeigen. Häuser mit großem Garten, ältere Menschen oder Familien sind oft sehr hilfsbereit.</p>
+        <div class="speech-bubble">„Wir sind 13–14 Jahre, kommen aus Wuppertal, und machen eine Schulherausforderung..."</div>
+      </div>
+      <div class="method-card reveal">
+        <span class="method-icon">🌾</span>
+        <div class="method-title">Bauernhöfe</div>
+        <p class="method-desc">Bauern im Sauerland kennen die Wandertradition. Gegenleistung anbieten: Tiere füttern, Holz stapeln, Hof fegen.</p>
+        <div class="speech-bubble">„Wir hinterlassen nichts außer Dankbarkeit – und helfen gerne kurz mit!"</div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:2.5rem;background:rgba(8,28,14,0.6);border:1px solid rgba(212,168,83,0.3);border-radius:12px;padding:1.5rem 2rem;max-width:700px;">
+      <p style="color:var(--amber);font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.6rem">⚠️ Wichtige Regel</p>
+      <p style="color:var(--sand);font-size:0.95rem;line-height:1.65">Spätestens um <strong style="color:var(--cream)">15 Uhr</strong> mit der Suche beginnen. Nie erst abends anklopfen. Mindestens <strong style="color:var(--cream)">5–8 Adressen</strong> fragen, bevor wir aufgeben.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BUDGET -->
+<section id="budget">
+  <div class="section-inner">
+    <div class="budget-layout">
+      <div>
+        <p class="section-label reveal">Finanzplan</p>
+        <h2 class="section-title reveal">100 € für<br><em style="font-style:italic;color:var(--moss)">11 Tage</em></h2>
+        <p class="reveal" style="color:var(--sand);line-height:1.75;margin-bottom:2.5rem;max-width:460px">Das Geld geht fast vollständig für Essen. Übernachtungen kosten nichts – das ist unser Konzept.</p>
+
+        <table class="budget-table reveal">
+          <tr><td>🚆 Anreise & Rückfahrt</td><td>0,00 €</td></tr>
+          <tr><td>🏕️ Übernachtungen (9 Nächte)</td><td>0 – 20 €</td></tr>
+          <tr><td>🌅 Frühstück (Hafer, Brot)</td><td>ca. 15 €</td></tr>
+          <tr><td>🥜 Mittagssnack unterwegs</td><td>ca. 10 €</td></tr>
+          <tr><td>🍝 Abendessen (warm kochen)</td><td>ca. 25 €</td></tr>
+          <tr><td>💧 Wasser & Getränke</td><td>ca. 5 €</td></tr>
+          <tr class="total"><td><strong>🎒 GESAMT</strong></td><td>75 – 100 €</td></tr>
+        </table>
+
+        <div class="reveal" style="margin-top:1.5rem;background:rgba(27,67,50,0.3);border-radius:10px;padding:1.2rem 1.5rem;border:1px solid rgba(82,183,136,0.15)">
+          <p style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--moss);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">💡 Spar-Tipp</p>
+          <p style="font-size:0.88rem;color:var(--sand);line-height:1.6">Nudeln (500g = 0,50 €) · Haferflocken (1 kg = 0,80 €) · Linsen (1 kg = 1,20 €) · Erdnussbutter (0,90 €). Pro Person reicht das für mehrere Tage!</p>
+        </div>
+      </div>
+
+      <div class="budget-visual reveal">
+        <div class="budget-ring-label">
+          <span>100 €</span>
+          <p>Gesamtbudget</p>
+        </div>
+        <div class="donut-wrap">
+          <svg viewBox="0 0 220 220" width="220" height="220">
+            <circle cx="110" cy="110" r="85" fill="none" stroke="rgba(82,183,136,0.08)" stroke-width="28"/>
+            <!-- Essen 55% -->
+            <circle cx="110" cy="110" r="85" fill="none" stroke="#52B788" stroke-width="28"
+              stroke-dasharray="294 533" stroke-dashoffset="133" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+            <!-- Reserve 25% -->
+            <circle cx="110" cy="110" r="85" fill="none" stroke="#95D5B2" stroke-width="28"
+              stroke-dasharray="134 533" stroke-dashoffset="-161" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+            <!-- Notfall 20% -->
+            <circle cx="110" cy="110" r="85" fill="none" stroke="#D4A853" stroke-width="28"
+              stroke-dasharray="107 533" stroke-dashoffset="-295" stroke-linecap="round" transform="rotate(-90 110 110)"/>
+          </svg>
+          <div class="donut-center">
+            <strong>100€</strong>
+            <small>10 Tage</small>
+          </div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#52B788"></div>Essen & Trinken (55 €)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#95D5B2"></div>Reserve für Notfälle (25 €)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#D4A853"></div>Sonstiges / Flexibel (20 €)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SICHERHEIT -->
+<section id="sicherheit">
+  <div class="section-inner">
+    <p class="section-label reveal">Safety First</p>
+    <h2 class="section-title reveal">Unser<br><em style="font-style:italic;color:var(--moss)">Sicherheitsplan</em></h2>
+
+    <div class="safety-grid">
+      <div class="safety-card reveal">
+        <div class="safety-icon">📍</div>
+        <div>
+          <h3>Tägliche Standortmeldung</h3>
+          <p>Jeden Abend kurz bei Eltern oder Betreuern melden – Standort, Schlafplatz, alles okay.</p>
+        </div>
+      </div>
+      <div class="safety-card reveal">
+        <div class="safety-icon">🔋</div>
+        <div>
+          <h3>Handys & Powerbanks</h3>
+          <p>Abends immer vollladen, wo möglich. Powerbank als Backup. Offline-Karte vorher runterladen (Komoot).</p>
+        </div>
+      </div>
+      <div class="safety-card reveal">
+        <div class="safety-icon">🩺</div>
+        <div>
+          <h3>Erste-Hilfe-Set</h3>
+          <p>Pflaster, Blasenpflaster, Schmerzmittel, Verbandsmaterial. Blasenpflaster sind Pflicht!</p>
+        </div>
+      </div>
+      <div class="safety-card reveal">
+        <div class="safety-icon">👥</div>
+        <div>
+          <h3>Gruppe bleibt zusammen</h3>
+          <p>Niemals alleine unterwegs. Immer mindestens zu zweit. Bei Problemen gemeinsam entscheiden.</p>
+        </div>
+      </div>
+      <div class="safety-card reveal">
+        <div class="safety-icon">⛈️</div>
+        <div>
+          <h3>Wetter & Notfälle</h3>
+          <p>Täglich Wettervorhersage checken. Bei Gewitter: Kein offener Kamm, keinen Baum. Notruf: 112.</p>
+        </div>
+      </div>
+      <div class="safety-card reveal">
+        <div class="safety-icon">🏠</div>
+        <div>
+          <h3>Notfallplan</h3>
+          <p>Bei echten Problemen sofort Eltern anrufen. Notfallreserve (20–25 €) immer dabei, nie anfassen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKLISTE -->
+<section id="packliste">
+  <div class="section-inner">
+    <p class="section-label reveal">Was kommt mit</p>
+    <h2 class="section-title reveal">Packliste<br><em style="font-style:italic;color:var(--moss)">max. 14 kg</em></h2>
+
+    <div class="gear-grid">
+      <div class="gear-item reveal"><span class="gear-emoji">⛺</span><div class="gear-info"><h4>Ultraleicht-Zelt</h4><small>~1,5 kg · 2-Personen</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🛏️</span><div class="gear-info"><h4>Schlafsack</h4><small>~1,0 kg · 3-Jahreszeiten</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🟫</span><div class="gear-info"><h4>Isomatte</h4><small>~0,4 kg · selbstaufblasend</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🎒</span><div class="gear-info"><h4>Trekkingrucksack</h4><small>~1,5 kg · 55–65L mit Hüftgurt</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">👟</span><div class="gear-info"><h4>Wanderstiefel (eingelaufen!)</h4><small>~1,2 kg · unbedingt vorher tragen!</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🧥</span><div class="gear-info"><h4>Regenjacke & Fleece</h4><small>~0,7 kg · Schichten-Prinzip</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🍳</span><div class="gear-info"><h4>Gaskocher + Topf</h4><small>~0,7 kg · Esbit als Backup</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🍝</span><div class="gear-info"><h4>Startproviant (3–4 Tage)</h4><small>~2,0 kg · Nudeln, Haferflocken, Nüsse</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">💧</span><div class="gear-info"><h4>Trinkflaschen (2×)</h4><small>~0,3 kg leer · immer voll auffüllen</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🗺️</span><div class="gear-info"><h4>Karte + Handy (Offline)</h4><small>~0,2 kg · Komoot vorher laden</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🩹</span><div class="gear-info"><h4>Erste Hilfe + Blasenpflaster</h4><small>~0,2 kg · das Wichtigste!</small></div></div>
+      <div class="gear-item reveal"><span class="gear-emoji">🔦</span><div class="gear-info"><h4>Stirnlampe + Powerbank</h4><small>~0,3 kg · plus Ersatzbatterien</small></div></div>
+    </div>
+
+    <div class="reveal" style="margin-top:3rem;text-align:center;padding:2rem;background:rgba(27,67,50,0.2);border-radius:16px;border:1px solid rgba(82,183,136,0.15)">
+      <p style="font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--moss);margin-bottom:0.5rem">„Jedes Kilo zählt."</p>
+      <p style="color:var(--sand);font-size:0.9rem;opacity:0.8">Vor der Tour unbedingt einmal mit vollem Gepäck 10 km laufen – um zu testen ob Gewicht und Schuhe passen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Herausforderung 2026</div>
+  <div class="footer-info">Rothaarsteig · Sauerland · Wuppertal<br>Klasse 8 · Fach Herausforderung · 100 € Budget</div>
+  <div class="footer-links">
+    <a href="https://www.rothaarsteig.de" target="_blank">rothaarsteig.de</a>
+    <a href="https://www.bahn.de" target="_blank">bahn.de</a>
+    <a href="https://www.komoot.de" target="_blank">komoot.de</a>
+  </div>
+</footer>
+
+<script>
+// ── Stars ──────────────────────────────────────────────────
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const star = document.createElement('div');
+  star.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  star.style.cssText = `
+    width: ${size}px; height: ${size}px;
+    left: ${Math.random() * 100}%;
+    top: ${Math.random() * 65}%;
+    --dur: ${2 + Math.random() * 4}s;
+    --delay: ${Math.random() * 4}s;
+    --op: ${0.3 + Math.random() * 0.7};
+  `;
+  starsContainer.appendChild(star);
+}
+
+// ── Scroll Reveal ──────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.transitionDelay = `${(i % 4) * 0.1}s`;
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+
+// ── Active nav link highlight ──────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => {
+        link.style.opacity = link.getAttribute('href') === `#${entry.target.id}` ? '1' : '0.7';
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => navObserver.observe(s));
+</script>
+
+</body>
+</html>
